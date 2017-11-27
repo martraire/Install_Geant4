@@ -75,3 +75,66 @@ Expat is a XML parsing C library. Geant4 default installation will search for Ex
 `sudo apt-get install expat`
 
 N.B: To check if Qt is *already* installed and to know its version: `sudo apt-get install qt-sdk`
+
+
+
+## 2. Geant4 installation
+
+The whole installation of Geant4 will be in the directory **/geant4**:
+```
+mkdir geant4
+cd geant4
+```
+
+### A - CLHEP Library 
+CLHEP is a Class Library for High Energy Physics providing additional classes such as random generators, physics vectors, geometry and linear algebra. 
+
+- Download CLHEP source file: http://proj-clhep.web.cern.ch/proj-clhep/clhep23.html
+- In this example, I choose the version 2.3.4.5.tgz
+- Copy the file in **/geant4**
+- Uncompress the source: `tar -xzvf clhep-2.3.4.5.tgz`
+- Install & compile in **/build**:
+```
+mkdir build
+cd build
+cmake ../2.3.4.5/CLHEP
+make
+sudo make all install
+```
+
+
+### B - Install & compile Geant4 source
+
+- Download Geant4 source file: http://geant4.web.cern.ch/geant4/support/download.shtml
+- In this example, I choose the GNU or Linux tar format, version **geant4.10.02.p01.gzip**
+
+N.B: As instruction mentioned, I also recommend to download the data files during the installation process, since many built-in examples need these data files. Hence you don't need to manually download data files unzip them, recompile the sources.
+- Uncompress the source: `tar -xzvf geant4.10.02.p03.tar.gz`
+- Install & compile in **/geant4.10.02.p03-build**:
+```
+mkdir geant4.10.02.p03-build
+cd geant4.10.02.p03-build
+cmake ../geant4.10.02.p03
+cmake -DCMAKE_INSTALL_PREFIX=/home/martraire/Soft/geant4/geant4.10.02.p03-install -DGEANT4_INSTALL_DATA=ON -DGEANT4_USE_OPENGL_X11=ON -DGEANT4_USE_QT=ON -DGEANT4_INSTALL_EXAMPLES=ON -DBUILD_SHARED_LIBS=ON -DGEANT4_BUILD_MULTITHREADED=ON /home/martraire/Soft/geant4/geant4.10.02.p03
+make -j4    (4 is for 4 cores, cf. details below)
+make install
+```
+N.B: Change value by number of cores. Here *-j**4***, 4 is for 4 cores. To know how many cores your CPU has: `cat /proc/cpuinfo | grep processor | wc -l`
+
+*Additional information about cmake:*
+
+If you don't use cmake before, it is important to understand the basic cmake installation concepts of source, build, and install directories.
+1. **source directory** "geant4.10.02.p03"is a folder to store source file (.h .cpp etc...). You download the Geant4 source files from the Internet. You unzip the files and get a folder "geant4.10.02.p01". That is your source folder.
+2. **build directory** "geant4.10.02.p03-build" is a folder to store cmake scripts and the build scripts generated from cmake programs. In the Unix system, like Ubuntu, cmake program will check your compilers and create the correct Unix Makefile for you.
+3. **install directory** "geant4.10.02.p03-install" stores the final products -- like share libraries or header files which are created according to the build scripts from cmake that configured by you. If you think you will not reconfigure the Geant4 anymore, you can remove "source" and "build" folder. 
+
+
+###  C - Setup the environment and activate Geant4
+
+The last part is to activate the Geant4 environment:
+`source ~/Soft/geant4/geant4.10.02.p03-install/bin/geant4.sh`
+
+In order to avoid using this command each time we need Geant4, you can add it in your **.bashrc** :
+`source ~/Soft/geant4/geant4.10.02.p03-install/bin/geant4.sh`
+
+
