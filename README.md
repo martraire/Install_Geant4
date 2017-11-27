@@ -138,3 +138,25 @@ In order to avoid using this command each time we need Geant4, you can add it in
 `source ~/Soft/geant4/geant4.10.02.p03-install/bin/geant4.sh`
 
 
+
+## 3. Run a Geant4 example
+
+If you didn't activate the Geant4 environment, please refer to the previous step **2.C** and run the *geant.sh* script.
+
+1. Copy an example from  **~/Soft/geant4/geant4.10.02.p03-install/share/Geant4-10.2.3/examples/**. There are different level of complexity. For this example, let's start with a basic one, the B1 in the directory **/basic** and copy it in your **/Work** directory:
+
+`cp -r ~/Soft/geant4/geant4.10.02.p03-install/share/Geant4-10.2.3/examples/basic/B1 ~/Work/.`
+
+2. Compile and build the executable of B1 example:
+```
+cd Work
+mkdir B1-build
+cd B1-build
+cmake -DGeant4_DIR=~/Soft/geant4/geant4.10.02.p03-install/lib/Geant4-10.2.3/ ~/Work/Geant4/example/B1
+cmake -DCMAKE_PREFIX_PATH=~/Soft/geant4/geant4.10.02.p03-install ~Work/Geant4/example/B1
+make -j4   (once again 4 is for 4 cores, change with the config of your machine)
+make
+```
+Now, you should see the executable *exampleB1*.
+
+3. Execute the example: `./exampleB1`
